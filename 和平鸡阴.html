@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小鸟游影花的和平精英</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            overflow: hidden;
+            background: #000;
+        }
+        /* 开始界面 */
+        .start-screen {
+            width: 100vw;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: url("file:///C:/Users/li'jun/Pictures/9A1FB2D51F06F85A7AE1DE9C3494B975.jpg");
+        }
+        .game-name {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+        .btn {
+            width: 280px;
+            height: 80px;
+            margin: 25px 0;
+            border: none;
+            border-radius: 40px;
+            background: linear-gradient(135deg, #ff6b6b, #ff416c);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 65, 108, 0.4);
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 65, 108, 0.6);
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        /* 弹窗通用样式 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        .modal-content {
+            width: 80%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .modal-title {
+            font-size: 28px;
+            color: #ff416c;
+            margin-bottom: 30px;
+        }
+        .modal-text {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        /* 验证弹窗选项按钮 */
+        .verify-btn {
+            width: 250px;
+            height: 70px;
+            margin: 15px auto;
+            display: block;
+            border: none;
+            border-radius: 35px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .verify-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #3ea7fe, #00e6fe);
+        }
+        /* 图片通用样式 */
+        .custom-img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        .close-btn {
+            width: 200px;
+            height: 60px;
+            border: none;
+            border-radius: 30px;
+            background: #ff416c;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .close-btn:hover {
+            background: #ff2d55;
+        }
+    </style>
+</head>
+<body>
+    <!-- 开始界面 -->
+    <div class="start-screen">
+        <div class="game-name">小鸟游影花的和平精英</div>
+        <button class="btn" id="studentBtn">我是小学生</button>
+        <button class="btn" id="adultBtn">我是大人</button>
+    </div>
+
+    <!-- 大人提示弹窗 -->
+    <div class="modal" id="adultModal">
+        <div class="modal-content">
+            <h2 class="modal-title">温馨提示</h2>
+            <p class="modal-text">只有小学生才能玩这款游戏哦～</p>
+            <button class="close-btn" id="closeAdultBtn">返回选择</button>
+        </div>
+    </div>
+
+    <!-- 小学生验证弹窗 -->
+    <div class="modal" id="verifyModal">
+        <div class="modal-content">
+            <h2 class="modal-title">验证一下</h2>
+            <p class="modal-text">你真的是小学生吗？</p>
+            <button class="verify-btn" id="realStudentBtn">我真的是小学生</button>
+            <button class="verify-btn" id="admitAdultBtn">我错了，我是牛马打工人</button>
+        </div>
+    </div>
+
+    <!-- 小学生禁止游戏弹窗 -->
+    <div class="modal" id="forbidModal">
+        <div class="modal-content">
+            <h2 class="modal-title">学习提示</h2>
+            <p class="modal-text">小学生就好好学习，不准玩游戏！</p>
+            <img src="file:///C:/Users/li'jun/Pictures/C8DDDC97CBDB24B4386E19ABB917DCBB.jpg" alt="学习提示图" class="custom-img">
+            <button class="close-btn" id="closeForbidBtn">返回选择</button>
+        </div>
+    </div>
+
+    <!-- 牛马打工人提示弹窗 -->
+    <div class="modal" id="workerModal">
+        <div class="modal-content">
+            <h2 class="modal-title">打工人提示</h2>
+            <p class="modal-text">牛马打工人就乖乖的去打工啊！</p>
+            <img src="file:///D:/li'jun/Pictures/6F7ED378501F61F87051C2E73EE1525E.jpg" alt="打工人提示图" class="custom-img">
+            <button class="close-btn" id="closeWorkerBtn">返回选择</button>
+        </div>
+    </div>
+
+    <script>
+        const studentBtn = document.getElementById('studentBtn');
+        const adultBtn = document.getElementById('adultBtn');
+        const adultModal = document.getElementById('adultModal');
+        const verifyModal = document.getElementById('verifyModal');
+        const forbidModal = document.getElementById('forbidModal');
+        const workerModal = document.getElementById('workerModal');
+        const closeAdultBtn = document.getElementById('closeAdultBtn');
+        const realStudentBtn = document.getElementById('realStudentBtn');
+        const admitAdultBtn = document.getElementById('admitAdultBtn');
+        const closeForbidBtn = document.getElementById('closeForbidBtn');
+        const closeWorkerBtn = document.getElementById('closeWorkerBtn');
+
+        studentBtn.addEventListener('click', () => {
+            verifyModal.style.display = 'flex';
+        });
+
+        adultBtn.addEventListener('click', () => {
+            adultModal.style.display = 'flex';
+        });
+
+        realStudentBtn.addEventListener('click', () => {
+            verifyModal.style.display = 'none';
+            forbidModal.style.display = 'flex';
+        });
+
+        admitAdultBtn.addEventListener('click', () => {
+            verifyModal.style.display = 'none';
+            workerModal.style.display = 'flex';
+        });
+
+        closeAdultBtn.addEventListener('click', () => {
+            adultModal.style.display = 'none';
+        });
+
+        closeForbidBtn.addEventListener('click', () => {
+            forbidModal.style.display = 'none';
+        });
+
+        closeWorkerBtn.addEventListener('click', () => {
+            workerModal.style.display = 'none';
+        });
+
+        [adultModal, verifyModal, forbidModal, workerModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
